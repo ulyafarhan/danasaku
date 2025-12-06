@@ -3,6 +3,7 @@
 import { createTransaction } from '../../../modules/transaction/use-cases/createTransaction.js';
 import { loadCSS } from '../../../core/cssLoader.js';
 import { router } from '../../../core/router.js';
+import { MainLayout } from '../../layout/MainLayout.js';
 
 // Page Controller: Transaction Form
 export const FormPage = {
@@ -79,3 +80,6 @@ export const FormPage = {
         });
     }
 };
+const formContent = this.renderFormTemplate();
+container.innerHTML = await MainLayout.render(formContent);
+this.attachFormHandler(); // Pasang event listener setelah render

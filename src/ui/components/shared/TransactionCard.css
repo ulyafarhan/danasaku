@@ -1,0 +1,57 @@
+.transaction-card {
+    background: var(--color-surface);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-sm);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-left: 4px solid transparent;
+}
+
+.transaction-card:active {
+    transform: scale(0.98);
+}
+
+/* Warna border kiri sebagai penanda cepat */
+.transaction-card.income { border-left-color: var(--color-success); }
+.transaction-card.expense { border-left-color: var(--color-danger); }
+
+.main-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-info .category {
+    font-weight: 600;
+    color: var(--color-text-main);
+    font-size: 1rem;
+}
+
+.main-info .note {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-top: 2px;
+}
+
+.meta-info {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.amount { font-weight: 700; font-size: 1rem; }
+.amount.income { color: var(--color-success); }
+.amount.expense { color: var(--color-danger); }
+
+.date-status {
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}

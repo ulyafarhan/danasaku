@@ -6,6 +6,7 @@ import { TransactionCard } from '../../components/shared/TransactionCard.js';
 import { Utils } from '../../../core/utils.js';
 import { loadCSS } from '../../../core/cssLoader.js';
 import { eventBus } from '../../../core/eventBus.js';
+import { MainLayout } from '../../layout/MainLayout.js';
 
 // Page Controller: Dashboard
 export const DashboardPage = {
@@ -63,3 +64,14 @@ export const DashboardPage = {
         `;
     }
 };
+
+const balanceData = await calculateBalance();
+const transactions = await getTransactionList();
+
+// Gunakan Template Literals untuk konten dalam
+const content = `
+    <div class="dashboard-page">
+        </div>
+`;
+
+container.innerHTML = await MainLayout.render(content);
