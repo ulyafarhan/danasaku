@@ -6,11 +6,10 @@
 /**
 
 const CONFIG = {
-  SPREADSHEET_ID: 'Saya Sembunyikan di .env',
+  SPREADSHEET_ID: 'Disembunyikan',
   SHEET_NAME: 'Transactions',
-  TELEGRAM_TOKEN: 'Saya Sembunyikan di .env',
-  TELEGRAM_CHAT_ID: 'Saya Sembunyikan di .env',
-  APP_SECRET: 'Saya Sembunyikan di .env'
+  TELEGRAM_TOKEN: 'Disembunyikan',
+  TELEGRAM_CHAT_ID: 'Disembunyikan',
 };
 
 function doPost(e) {
@@ -124,16 +123,21 @@ function createJSONOutput(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
 
-// --- FUNGSI TELEGRAM BARU (Support Create, Update, Delete) ---
+// --- FUNGSI TELEGRAM PROFESIONAL ---
 function sendTelegram(data, action) {
   if (!CONFIG.TELEGRAM_TOKEN || !CONFIG.TELEGRAM_CHAT_ID) return;
+
+  const now = new Date();
+  const timeString = Utilities.formatDate(now, "Asia/Jakarta", "dd MMMM yyyy | HH:mm 'WIB'");
 
   let message = '';
 
   if (action === 'create') {
-    // Data berupa Array of Arrays (Batch)
-    message = '✅ <b>Transaksi Baru Dicatat</b>\n\n';
-    let totalBatch = 0;
+    // --- SKENARIO: DATA BARU (BATCH) ---
+    message = `<b>LAPORAN TRANSAKSI BARU</b>\n`;
+    message += `Waktu Pelaporan: ${timeString}\n`;
+    message += `Status: Berhasil Disimpan\n`;
+    message += `==============================\n\n`;
 
     data.forEach(row => {
       // Struktur: [ID, Tanggal, Pemasukan, Pengeluaran, Kategori, Catatan, Time]
@@ -141,40 +145,51 @@ function sendTelegram(data, action) {
       const income = Number(row[2] || 0);
       const expense = Number(row[3] || 0);
       const category = row[4];
-      const note = row[5] || '-';
+      const note = row[5] && row[5] !== '-' ? row[5] : 'Tidak ada catatan';
       
       const amount = income || expense;
-      const icon = income ? '📈' : '📉';
+      const typeLabel = income ? 'Pemasukan' : 'Pengeluaran';
       
-      totalBatch += amount;
-      
-      message += `${icon} <b>${category}</b>\n`;
-      message += `Rp ${formatRupiah(amount)}\n`;
-      if(note !== '-') message += `Ket: ${note}\n`;
-      message += `----------------\n`;
+      message += `<b>Jenis:</b> ${typeLabel}\n`;
+      message += `<b>Kategori:</b> ${category}\n`;
+      message += `<b>Nominal:</b> Rp ${formatRupiah(amount)}\n`;
+      message += `<b>Keterangan:</b> ${note}\n`;
+      message += `------------------------------\n`;
     });
-    
-    // message += `Total Batch: Rp ${formatRupiah(totalBatch)}`;
 
   } else if (action === 'update') {
-    // Data berupa Object
-    message = '✏️ <b>Transaksi Diperbarui</b>\n\n';
-    const icon = data.type === 'INCOME' ? '📈' : '📉';
+    // --- SKENARIO: PEMBARUAN DATA ---
+    const typeLabel = data.type === 'INCOME' ? 'Pemasukan' : 'Pengeluaran';
+    const note = data.note && data.note !== '-' ? data.note : 'Tidak ada catatan';
+
+    message = `<b>NOTIFIKASI PEMBARUAN DATA</b>\n`;
+    message += `Waktu Perubahan: ${timeString}\n`;
+    message += `Status: Data Telah Diperbarui\n`;
+    message += `==============================\n\n`;
     
-    message += `${icon} <b>${data.category}</b>\n`;
-    message += `Nominal: Rp ${formatRupiah(data.amount)}\n`;
-    message += `Catatan: ${data.note || '-'}\n`;
-    message += `<i>Data telah diperbarui di Spreadsheet.</i>`;
+    message += `<b>RINCIAN TERKINI:</b>\n`;
+    message += `<b>Jenis Transaksi:</b> ${typeLabel}\n`;
+    message += `<b>Kategori:</b> ${data.category}\n`;
+    message += `<b>Nominal:</b> Rp ${formatRupiah(data.amount)}\n`;
+    message += `<b>Keterangan:</b> ${note}\n`;
+    message += `\n<i>Sistem telah memperbarui data pada basis data spreadsheet.</i>`;
 
   } else if (action === 'delete') {
-    // Data berupa Object (Info yang dihapus)
-    message = '🗑️ <b>Transaksi Dihapus</b>\n\n';
-    const icon = data.type === 'INCOME' ? '📈' : '📉';
+    // --- SKENARIO: PENGHAPUSAN DATA ---
+    const typeLabel = data.type === 'INCOME' ? 'Pemasukan' : 'Pengeluaran';
+    const note = data.note && data.note !== '-' ? data.note : 'Tidak ada catatan';
+
+    message = `<b>NOTIFIKASI PENGHAPUSAN DATA</b>\n`;
+    message += `Waktu Penghapusan: ${timeString}\n`;
+    message += `Status: Dihapus Permanen\n`;
+    message += `==============================\n\n`;
     
-    message += `${icon} <b>${data.category}</b>\n`;
-    message += `Nominal: Rp ${formatRupiah(data.amount)}\n`;
-    message += `Catatan: ${data.note || '-'}\n`;
-    message += `<i>Data telah dihapus permanen.</i>`;
+    message += `<b>ARSIP DATA YANG DIHAPUS:</b>\n`;
+    message += `<b>Jenis Transaksi:</b> ${typeLabel}\n`;
+    message += `<b>Kategori:</b> ${data.category}\n`;
+    message += `<b>Nominal:</b> Rp ${formatRupiah(data.amount)}\n`;
+    message += `<b>Keterangan:</b> ${note}\n`;
+    message += `\n<i>Data transaksi di atas telah dihapus dari sistem dan tidak dapat dipulihkan.</i>`;
   }
 
   // Kirim ke Telegram
@@ -184,7 +199,7 @@ function sendTelegram(data, action) {
       payload: {
         chat_id: CONFIG.TELEGRAM_CHAT_ID,
         text: message,
-        parse_mode: 'HTML' // Agar bisa pakai Bold/Italic
+        parse_mode: 'HTML' 
       }
     });
   } catch (e) {
@@ -192,7 +207,11 @@ function sendTelegram(data, action) {
   }
 }
 
-// Helper Format Rupiah Sederhana
+// Helper Format Rupiah (Lebih Rapi)
 function formatRupiah(num) {
-  return new Intl.NumberFormat('id-ID').format(num);
+  // Format angka Indonesia (menggunakan titik sebagai pemisah ribuan)
+  return new Intl.NumberFormat('id-ID', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(num);
 }
