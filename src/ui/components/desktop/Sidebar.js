@@ -5,18 +5,17 @@ export const Sidebar = {
         return `
             <aside class="sidebar">
                 <div class="sidebar-header">
-                    <h2>DanaSaku</h2>
-                    <p>Finance Ledger</p>
+                    <div class="sidebar-logo">DanaSaku</div>
                 </div>
-                <nav class="sidebar-menu">
-                    <a href="#dashboard" class="menu-item ${isActive('#dashboard')}">
-                        <span class="icon">🏠</span> Beranda
+                <nav class="sidebar-nav">
+                    <a href="#dashboard" class="nav-link ${isActive('#dashboard')}">
+                        <span class="nav-link-icon">🏠</span> Beranda
                     </a>
-                    <a href="#form" class="menu-item ${isActive('#form')}">
-                        <span class="icon">➕</span> Input Transaksi
+                    <a href="#form" class="nav-link ${isActive('#form')}">
+                        <span class="nav-link-icon">➕</span> Tambah Data
                     </a>
-                    <a href="#history" class="menu-item ${isActive('#history')}">
-                        <span class="icon">📜</span> Riwayat Data
+                    <a href="#history" class="nav-link ${isActive('#history')}">
+                        <span class="nav-link-icon">📜</span> Riwayat
                     </a>
                 </nav>
             </aside>

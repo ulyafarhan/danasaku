@@ -1,1 +1,65 @@
-/* Helper Class: .hidden, .flex, .text-center */
+/* src/styles/utilities.css */
+
+/* Layout & Spacing */
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: calc(var(--spacing-unit) * 2);
+  padding-right: calc(var(--spacing-unit) * 2);
+}
+
+.flex {
+  display: flex;
+}
+.flex-col {
+  flex-direction: column;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.items-center {
+  align-items: center;
+}
+.gap-2 {
+  gap: var(--spacing-unit);
+}
+.gap-4 {
+  gap: calc(var(--spacing-unit) * 2);
+}
+
+/* Text Alignment */
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+
+/* Margin Utilities */
+.mb-2 {
+  margin-bottom: var(--spacing-unit);
+}
+.mt-4 {
+  margin-top: calc(var(--spacing-unit) * 2);
+}
+.p-4 {
+  padding: calc(var(--spacing-unit) * 2);
+}
+
+/* Visibility (Responsiveness) */
+.hidden-mobile {
+  display: none;
+}
+
+@media (min-width: var(--breakpoint-desktop)) {
+  .hidden-mobile {
+    display: initial !important; /* Tampilkan di desktop */
+  }
+  .hidden-desktop {
+    display: none !important; /* Sembunyikan di desktop */
+  }
+}

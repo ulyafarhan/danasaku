@@ -1,46 +1,40 @@
 :root {
-    /* Brand Colors - Modern Blue */
-    --color-primary: #2563EB;
-    --color-primary-dark: #1D4ED8;
-    --color-primary-soft: #DBEAFE;
-    
-    /* Semantic Colors */
-    --color-success: #10B981;
-    --color-success-soft: #D1FAE5;
-    --color-danger: #EF4444;
-    --color-danger-soft: #FEE2E2;
-    --color-warning: #F59E0B;
-    
-    /* Neutral / Surface */
-    --color-bg: #F8FAFC;         
-    --color-surface: #FFFFFF;    
-    --color-border: #E2E8F0;
-    
-    /* Typography */
-    --font-main: 'Outfit', sans-serif;
-    --color-text-main: #0F172A;
-    --color-text-muted: #64748B;
-    --color-text-light: #94A3B8;
+  /* --- COLOR PALETTE (Tetap) --- */
+  --color-primary: #3b82f6;
+  --color-primary-dark: #2563eb;
+  --color-secondary: #06b6d4;
+  --color-accent: #f97316;
+  
+  --color-text-primary: #1e293b;
+  --color-text-secondary: #64748b;
+  --color-text-light: #ffffff;
+  
+  --color-background: #f1f5f9; /* Sedikit lebih gelap agar kartu pop-out */
+  --color-surface: #ffffff;
+  
+  --color-success: #10b981;
+  --color-error: #ef4444;
+  --color-warning: #f59e0b;
 
-    /* Spacing */
-    --spacing-xs: 4px;
-    --spacing-sm: 8px;
-    --spacing-md: 16px;
-    --spacing-lg: 24px;
-    --spacing-xl: 32px;
-    
-    /* Modern UI Props */
-    --radius-sm: 8px;
-    --radius-md: 16px;
-    --radius-lg: 24px;
-    --radius-full: 9999px;
-    
-    /* Soft Shadows */
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-    --shadow-md: 0 4px 20px -2px rgba(0, 0, 0, 0.08);
-    --shadow-float: 0 10px 30px -5px rgba(37, 99, 235, 0.25);
-    
-    /* Animation */
-    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* --- SPACING SYSTEM (KUNCI KERAPIAN) --- */
+  /* Base unit 4px */
+  --spacing-xs: 4px;   /* Jarak antar teks kecil */
+  --spacing-sm: 8px;   /* Jarak dalam elemen kecil */
+  --spacing-md: 16px;  /* Padding standar kartu */
+  --spacing-lg: 24px;  /* Jarak antar seksi (PENTING) */
+  --spacing-xl: 32px;  /* Jarak margin halaman */
+  --spacing-2xl: 48px; /* Jarak section besar */
+
+  /* --- SHAPES --- */
+  --border-radius-sm: 8px;
+  --border-radius: 16px; /* Lebih bulat = Lebih modern */
+  --border-radius-lg: 24px;
+
+  /* --- SHADOWS (Soft & Deep) --- */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-float: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --breakpoint-desktop: 768px;
 }

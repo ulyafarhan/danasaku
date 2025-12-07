@@ -2,99 +2,134 @@ import { createTransaction } from '../../../modules/transaction/use-cases/create
 import { loadCSS } from '../../../core/cssLoader.js';
 import { router } from '../../../core/router.js';
 import { MainLayout } from '../../layout/MainLayout.js';
+import Loader from '../../components/shared/Loader.js';
+import { Button } from '../../components/shared/Button.js';
 
 export const FormPage = {
     async render(container) {
+        Loader.show();
         await loadCSS('/src/ui/pages/form/Form.css');
+        
         const content = this.renderFormTemplate();
-        // Render Layout dulu, baru isinya
         container.innerHTML = await MainLayout.render(content);
+        
         this.attachFormHandler();
+        Loader.hide();
     },
 
     renderFormTemplate() {
         return `
             <div class="form-page">
-                <h2>Input Transaksi</h2>
-                <form id="transaction-form">
-                    <div class="field-group amount-group">
-                        <label for="amount">Nominal (Rp)</label>
-                        <input type="number" id="amount" required min="1000" placeholder="0">
-                    </div>
+                <div class="form-header">
+                    <h2>Input Transaksi</h2>
+                    <p>Catat pemasukan atau pengeluaranmu</p>
+                </div>
 
-                    <div class="field-group">
-                        <label for="type">Jenis</label>
-                        <select id="type" required>
-                            <option value="EXPENSE">Pengeluaran 💸</option>
-                            <option value="INCOME">Pemasukan 💰</option>
-                        </select>
-                    </div>
+                <div class="form-card">
+                    <form id="transaction-form">
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="amount">Nominal</label>
+                            <div class="amount-wrapper">
+                                <span class="amount-prefix">Rp</span>
+                                <input type="number" id="amount" class="form-input hero-amount" required min="500" placeholder="0">
+                            </div>
+                        </div>
 
-                    <div class="field-group">
-                        <label for="category">Kategori</label>
-                        <input type="text" id="category" list="category-options" required placeholder="Contoh: Makan, Gaji...">
-                        <datalist id="category-options">
-                            <option value="Makan & Minum"></option>
-                            <option value="Transportasi"></option>
-                            <option value="Belanja"></option>
-                            <option value="Tagihan"></option>
-                            <option value="Gaji"></option>
-                        </datalist>
-                    </div>
+                        <div class="form-group">
+                            <label class="form-label">Jenis Transaksi</label>
+                            <div class="type-switch">
+                                <div class="type-option expense">
+                                    <input type="radio" name="type" id="type-expense" value="EXPENSE" checked>
+                                    <label for="type-expense">
+                                        <span>📉</span> Pengeluaran
+                                    </label>
+                                </div>
+                                <div class="type-option income">
+                                    <input type="radio" name="type" id="type-income" value="INCOME">
+                                    <label for="type-income">
+                                        <span>📈</span> Pemasukan
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
 
-                    <div class="field-group">
-                        <label for="note">Catatan</label>
-                        <textarea id="note" rows="2" placeholder="Keterangan tambahan..."></textarea>
-                    </div>
+                        <div class="form-group">
+                            <label class="form-label" for="category">Kategori</label>
+                            <input type="text" id="category" class="form-input" list="category-options" required placeholder="Contoh: Makan, Bensin, Gaji...">
+                            <datalist id="category-options">
+                                <option value="Makan & Minum">
+                                <option value="Transportasi">
+                                <option value="Belanja">
+                                <option value="Tagihan & Utilitas">
+                                <option value="Hiburan">
+                                <option value="Kesehatan">
+                                <option value="Gaji">
+                                <option value="Investasi">
+                            </datalist>
+                        </div>
 
-                    <button type="submit" class="button-primary">Simpan Transaksi</button>
-                    <p id="message-area" class="text-center text-muted" style="margin-top: 15px;"></p>
-                </form>
+                        <div class="form-group">
+                            <label class="form-label" for="note">Catatan (Opsional)</label>
+                            <textarea id="note" class="form-textarea" rows="3" placeholder="Tulis detail tambahan..."></textarea>
+                        </div>
+
+                        <div style="margin-top: 32px;">
+                            ${Button.render({
+                                text: 'Simpan Transaksi',
+                                type: 'submit',
+                                variant: 'primary',
+                                fullWidth: true,
+                                icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>`
+                            })}
+                            
+                            <button type="button" id="btn-cancel" class="btn btn-link w-full" style="margin-top: 12px;">
+                                Batal & Kembali
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         `;
     },
 
     attachFormHandler() {
         const form = document.getElementById('transaction-form');
-        const messageArea = document.getElementById('message-area');
-        const btn = form.querySelector('button');
+        const btnCancel = document.getElementById('btn-cancel');
+        const btnSubmit = form.querySelector('button[type="submit"]');
+
+        btnCancel.addEventListener('click', () => router.navigate('#dashboard'));
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             // Ambil data
+            const typeSelected = form.querySelector('input[name="type"]:checked').value;
             const formData = {
                 amount: form.querySelector('#amount').value,
-                type: form.querySelector('#type').value,
+                type: typeSelected,
                 category: form.querySelector('#category').value,
                 note: form.querySelector('#note').value,
             };
 
-            // UI Feedback: Disable tombol biar gak double click
-            btn.disabled = true;
-            btn.innerText = 'Menyimpan...';
-            messageArea.textContent = '';
+            // Loading State (Manual krn kita pakai Button.render string)
+            btnSubmit.innerHTML = '<div class="btn-spinner"></div> Menyimpan...';
+            btnSubmit.disabled = true;
 
             try {
-                // Proses simpan
                 await createTransaction(formData);
                 
-                // Sukses
-                btn.innerText = 'Berhasil! ✅';
-                messageArea.textContent = 'Data tersimpan.';
+                // Feedback
                 form.reset();
+                Loader.hide(); // Jaga-jaga
                 
-                // Redirect cepat (0.5 detik)
-                setTimeout(() => {
-                    router.navigate('#dashboard');
-                }, 500);
+                // Redirect
+                router.navigate('#dashboard');
 
             } catch (error) {
-                // Gagal
-                btn.disabled = false;
-                btn.innerText = 'Simpan Transaksi';
-                messageArea.textContent = `Gagal: ${error.message}`;
-                messageArea.style.color = 'var(--color-danger)';
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = 'Simpan Transaksi';
+                alert(`Gagal menyimpan: ${error.message}`);
             }
         });
     }

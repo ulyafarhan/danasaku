@@ -1,31 +1,38 @@
 import { loadCSS } from '../../core/cssLoader.js';
 import { BottomNav } from '../components/mobile/BottomNav.js';
 import { Sidebar } from '../components/desktop/Sidebar.js';
+import Loader from '../components/shared/Loader.js'; // Import Loader
 
 export const MainLayout = {
     async render(contentHTML) {
-        // Load semua CSS penting
+        // Load CSS Utama
         await Promise.all([
+            loadCSS('/src/styles/variables.css'),
+            loadCSS('/src/styles/reset.css'),
+            loadCSS('/src/styles/typography.css'),
+            loadCSS('/src/styles/utilities.css'),
             loadCSS('/src/ui/layout/MainLayout.css'),
             loadCSS('/src/ui/components/mobile/BottomNav.css'),
             loadCSS('/src/ui/components/desktop/Sidebar.css'),
             loadCSS('/src/ui/components/shared/Button.css'),
-            loadCSS('/src/styles/variables.css')
         ]);
-        
+
+        // Render komponen Loader sekali di layout utama
+        const loaderHTML = Loader.render();
         const currentHash = window.location.hash || '#dashboard';
 
         return `
-            <div class="layout-wrapper">
+            ${loaderHTML}
+            <div class="main-layout">
                 ${Sidebar.render(currentHash)}
                 
-                <div class="main-container">
-                    <main class="app-content">
+                <main class="main-content">
+                    <div class="container">
                         ${contentHTML}
-                    </main>
-                    
-                    ${BottomNav.render(currentHash)}
-                </div>
+                    </div>
+                </main>
+                
+                ${BottomNav.render(currentHash)}
             </div>
         `;
     }

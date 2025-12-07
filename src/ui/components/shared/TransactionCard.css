@@ -1,26 +1,85 @@
-.transaction-item {
-    display: flex; align-items: center;
-    background: var(--color-surface);
-    padding: 16px;
-    border-bottom: 1px solid var(--color-border);
+.transaction-card {
+  display: flex;
+  align-items: center;
+  /* Padding dalam kartu dibuat lega */
+  padding: var(--spacing-md); 
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(241, 245, 249, 1); /* Border halus */
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  position: relative;
 }
 
-.transaction-item:last-child { border-bottom: none; }
-
-.icon-circle {
-    width: 44px; height: 44px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    margin-right: 16px; flex-shrink: 0;
+.transaction-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+  border-color: var(--color-primary-dark); /* Highlight border saat hover */
 }
 
-.icon-circle.expense { background-color: var(--color-danger-soft); color: var(--color-danger); }
-.icon-circle.income { background-color: var(--color-success-soft); color: var(--color-success); }
+/* Icon Container */
+.transaction-icon {
+  width: 48px; /* Ukuran fix */
+  height: 48px;
+  border-radius: 12px; /* Rounded square, bukan lingkaran penuh, lebih modern */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: var(--spacing-md); /* Jarak ikon ke teks */
+  flex-shrink: 0;
+  font-size: 1.5rem;
+}
 
-.details { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-.details .category { font-weight: 600; font-size: 1rem; }
-.details .note { font-size: 0.85rem; color: var(--color-text-muted); }
+.transaction-icon.income {
+  background-color: rgba(16, 185, 129, 0.1); /* Background transparan */
+  color: var(--color-success);
+}
 
-.value { text-align: right; }
-.value .amount { font-weight: 700; font-size: 1rem; }
-.value .amount.income { color: var(--color-success); }
-.value .time { font-size: 0.75rem; color: var(--color-text-light); display: block; }
+.transaction-icon.expense {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--color-error);
+}
+
+.transaction-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2.5px;
+}
+
+/* Details Section */
+.transaction-details {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0; /* Mencegah teks overflow */
+}
+
+.transaction-description {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 4px; /* Jarak judul ke tanggal */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transaction-date {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+/* Amount Section */
+.transaction-amount {
+  font-weight: 700;
+  font-size: 1rem;
+  text-align: right;
+  padding-left: var(--spacing-sm);
+  white-space: nowrap;
+}
+
+.transaction-amount.income { color: var(--color-success); }
+.transaction-amount.expense { color: var(--color-error); }

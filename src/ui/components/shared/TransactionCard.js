@@ -1,4 +1,8 @@
 import { Utils } from '../../../core/utils.js';
+import { loadCSS } from '../../../core/cssLoader.js';
+
+// Memastikan CSS diload jika komponen ini dipanggil terpisah (optional safety)
+loadCSS('/src/ui/components/shared/TransactionCard.css');
 
 export const TransactionCard = {
     render(transaction) {
@@ -6,24 +10,27 @@ export const TransactionCard = {
         const isExpense = transaction.type === 'EXPENSE';
         const typeClass = isExpense ? 'expense' : 'income';
         
-        const icon = isExpense 
-            ? `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>`
-            : `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>`;
+        // Icon SVG yang lebih modern
+        const iconSvg = isExpense 
+            ? `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7 7 7-7"/></svg>` // Panah Bawah
+            : `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7-7-7 7"/></svg>`; // Panah Atas
+
+        const timeStr = new Date(transaction.timestamp * 1000).toLocaleTimeString('id-ID', {
+            hour: '2-digit', 
+            minute:'2-digit'
+        });
 
         return `
-            <div class="transaction-item">
-                <div class="icon-circle ${typeClass}">
-                    ${icon}
+            <div class="transaction-card">
+                <div class="transaction-icon ${typeClass}">
+                    ${iconSvg}
                 </div>
-                <div class="details">
-                    <span class="category">${transaction.category}</span>
-                    <span class="note">${transaction.note || 'Tanpa catatan'}</span>
+                <div class="transaction-details">
+                    <h4 class="transaction-description">${transaction.category}</h4>
+                    <span class="transaction-date">${timeStr} • ${transaction.note || 'Tanpa catatan'}</span>
                 </div>
-                <div class="value">
-                    <span class="amount ${typeClass}">
-                        ${isExpense ? '-' : '+'} ${amountDisplay}
-                    </span>
-                    <span class="time">${new Date(transaction.timestamp * 1000).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})}</span>
+                <div class="transaction-amount ${typeClass}">
+                    ${isExpense ? '-' : '+'} ${amountDisplay}
                 </div>
             </div>
         `;

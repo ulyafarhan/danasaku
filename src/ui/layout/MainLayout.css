@@ -1,36 +1,43 @@
-.layout-wrapper {
-    display: flex;
-    min-height: 100vh;
-    background-color: var(--color-bg);
+/* Mobile First: Stack ke bawah */
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-background);
 }
 
-.main-container {
-    flex: 1;
-    position: relative;
-    width: 100%;
+.main-content {
+  flex-grow: 1;
+  width: 100%;
+  padding: var(--spacing-md);
+  padding-bottom: 100px; /* Space untuk BottomNav di HP */
 }
 
-.app-content {
-    padding: var(--spacing-lg);
-    padding-bottom: 100px; /* Space untuk Navigasi Bawah di HP */
-    max-width: 500px; /* Batas lebar tampilan HP di layar besar */
-    margin: 0 auto;
-    animation: fadeIn 0.4s ease-out;
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Desktop Adjustment */
+/* --- DESKTOP LAYOUT (Admin Style) --- */
 @media (min-width: 768px) {
-    .main-container {
-        margin-left: 260px; /* Offset untuk Sidebar */
-    }
-    
-    .app-content {
-        padding-bottom: var(--spacing-lg);
-        max-width: 800px;
-    }
+  .main-layout {
+    display: grid;
+    /* Kolom 1: Sidebar (280px), Kolom 2: Sisanya (1fr) */
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: 100vh; /* Tinggi layar penuh */
+    overflow: hidden; /* Mencegah scroll ganda */
+  }
+
+  .main-content {
+    padding: var(--spacing-xl) var(--spacing-2xl);
+    padding-bottom: var(--spacing-xl); /* Reset padding bawah */
+    height: 100vh;
+    overflow-y: auto; /* Scroll hanya di bagian konten */
+  }
+  
+  .container {
+    max-width: 1100px; /* Lebar konten maksimal lebih lega */
+    margin: 0; /* Reset auto margin */
+  }
 }
