@@ -1,31 +1,41 @@
-// Fetch Wrapper ke Google Apps Script
-
 import { APP_CONFIG } from '../../config/appConfig.js';
 
-// API Wrapper for Google Apps Script
+// Klien Google Apps Script
 export const GASClient = {
-    async sendBatch(rows) {
-        if (!APP_CONFIG.API_URL) {
-            console.warn('API_URL belum dikonfigurasi.');
-            return false;
-        }
-
+    // Metode POST: Kirim data ke GAS
+    async _post(payload) {
+        if (!APP_CONFIG.API_URL) return false;
+        // Tambahkan kunci rahasia ke payload
+        const securedPayload = {
+            ...payload,
+            authKey: APP_CONFIG.APP_SECRET 
+        };
         try {
-            const response = await fetch(APP_CONFIG.API_URL, {
+            await fetch(APP_CONFIG.API_URL, {
                 method: 'POST',
-                mode: 'no-cors', // Penting untuk GAS Web App sederhana
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ data: rows })
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
             });
-            
-            // Mode 'no-cors' tidak mengembalikan detail response JSON
-            // Kita asumsikan sukses jika tidak throw error
             return true;
         } catch (error) {
-            console.error('Sync Error:', error);
+            console.error('GAS Error:', error);
             throw error;
         }
+    },
+
+    // Metode POST: Kirim batch transaksi ke GAS
+    async sendBatch(rows) {
+        return this._post({ action: 'create', data: rows });
+    },
+
+    // Metode POST: Update transaksi di GAS
+    async updateTransaction(transaction) {
+        return this._post({ action: 'update', data: transaction });
+    },
+
+    // Metode POST: Hapus transaksi di GAS
+    async deleteTransaction(id) {
+        return this._post({ action: 'delete', data: { id } });
     }
 };

@@ -139,3 +139,109 @@
 .type-option.income input:checked + label {
   color: var(--color-success);
 }
+
+/* --- PREMIUM SELECT DROPDOWN --- */
+
+.select-wrapper {
+  position: relative;
+  width: 100%;
+  /* Memastikan dropdown tidak pernah lebih lebar dari container induknya */
+  max-width: 100%; 
+}
+
+.form-select {
+  /* Layout & Sizing */
+  width: 100%;
+  /* Padding vertikal 12px agar touch-target nyaman di HP (min 44px height) */
+  padding: 12px 16px; 
+  padding-right: 48px; /* Ruang lebih besar di kanan agar teks tidak menabrak panah */
+  
+  /* Typography */
+  /* Font 16px wajib untuk Mobile agar tidak auto-zoom di iOS */
+  font-size: 16px; 
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  
+  /* Visual Style */
+  background-color: #ffffff;
+  /* Border lebih halus dengan warna slate/gray modern */
+  border: 1px solid #e2e8f0; 
+  /* Rounded 12px memberikan kesan lebih modern & friendly */
+  border-radius: 12px; 
+  
+  /* Reset Default Browser Style */
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  
+  /* Text Handling (Agar tidak melebar keluar) */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  /* Shadow & Transition */
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Shadow tipis untuk kedalaman */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+/* Hover State: Sedikit lebih gelap bordernya agar user sadar ini interaktif */
+.form-select:hover {
+  border-color: #cbd5e1;
+  background-color: #fafafa; /* Background sedikit abu sangat muda */
+}
+
+/* Focus State: Ring yang cantik tapi tidak norak */
+.form-select:focus {
+  background-color: #ffffff;
+  border-color: var(--color-primary);
+  /* Ring focus menggunakan shadow semi-transparan warna primary */
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); 
+  outline: none;
+}
+
+/* Placeholder State (Invalid) */
+.form-select:invalid {
+  color: #94a3b8; /* Slate-400: Warna placeholder yang sopan */
+  font-weight: 400;
+}
+
+/* Disabled State */
+.form-select:disabled {
+  background-color: #f1f5f9;
+  color: #cbd5e1;
+  cursor: not-allowed;
+  border-color: #e2e8f0;
+  box-shadow: none;
+}
+
+/* --- CUSTOM ARROW ICON --- */
+.select-arrow {
+  position: absolute;
+  top: 50%;
+  right: 16px; /* Posisi pas di kanan */
+  transform: translateY(-50%);
+  
+  /* Pointer events none PENTING agar klik tembus ke select di bawahnya */
+  pointer-events: none; 
+  
+  color: #64748b; /* Warna ikon netral */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+/* Micro-interaction: Panah berubah warna saat wrapper di-hover */
+.select-wrapper:hover .select-arrow {
+  color: var(--color-text-primary);
+}
+
+/* Micro-interaction: Panah berputar sedikit/berubah warna saat fokus */
+.form-select:focus + .select-arrow {
+  color: var(--color-primary);
+  transform: translateY(-50%) rotate(180deg); /* Opsional: Efek putar panah saat aktif */
+}

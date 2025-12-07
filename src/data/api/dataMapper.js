@@ -1,16 +1,18 @@
-// Transformasi JSON Lokal <-> Array Spreadsheet
-
-// Transform: Local Object -> Spreadsheet Row Array
 export const DataMapper = {
     toSheetRow(transaction) {
+        const isIncome = transaction.type === 'INCOME';
+        // Jika Pemasukan, isi kolom Pemasukan, kosongkan Pengeluaran. Begitu sebaliknya.
+        const incomeVal = isIncome ? transaction.amount : ''; 
+        const expenseVal = !isIncome ? transaction.amount : '';
+
         return [
-            transaction.id,            // Col A
-            transaction.dateDisplay,   // Col B
-            transaction.type,          // Col C
-            transaction.category,      // Col D
-            transaction.amount,        // Col E
-            transaction.note,          // Col F
-            transaction.timestamp      // Col G
+            transaction.id,            // Col A: ID
+            transaction.dateDisplay,   // Col B: Tanggal
+            incomeVal,                 // Col C: Pemasukan
+            expenseVal,                // Col D: Pengeluaran
+            transaction.category,      // Col E: Kategori
+            transaction.note,          // Col G: Catatan
+            transaction.timestamp      // Col H: Timestamp
         ];
     }
 };

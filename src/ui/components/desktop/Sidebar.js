@@ -1,7 +1,15 @@
+// Komponen Sidebar
 export const Sidebar = {
+    /**
+     * Render komponen Sidebar
+     * @param {string} activeRoute - Rute yang aktif saat ini
+     * @returns {string} - HTML string dari komponen Sidebar
+     */
     render(activeRoute) {
+        // Fungsi untuk memeriksa apakah rute aktif
         const isActive = (route) => activeRoute.startsWith(route) ? 'active' : '';
 
+        // Render komponen Sidebar
         return `
             <aside class="sidebar">
                 <div class="sidebar-header">

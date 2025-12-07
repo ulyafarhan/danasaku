@@ -1,7 +1,15 @@
+// Komponen BottomNav
 export const BottomNav = {
+    /**
+     * Render komponen BottomNav
+     * @param {string} activeRoute - Rute yang aktif saat ini
+     * @returns {string} - HTML string dari komponen BottomNav
+     */
     render(activeRoute) {
+        // Fungsi untuk memeriksa apakah rute aktif
         const isActive = (route) => activeRoute.startsWith(route) ? 'active' : '';
 
+        // Render komponen BottomNav
         return `
             <nav class="bottom-nav">
                 <a href="#dashboard" class="nav-item ${isActive('#dashboard')}">

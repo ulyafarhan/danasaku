@@ -1,7 +1,7 @@
 import { loadCSS } from '../../core/cssLoader.js';
 import { BottomNav } from '../components/mobile/BottomNav.js';
 import { Sidebar } from '../components/desktop/Sidebar.js';
-import Loader from '../components/shared/Loader.js'; // Import Loader
+import Loader from '../components/shared/Loader.js'; 
 
 export const MainLayout = {
     async render(contentHTML) {

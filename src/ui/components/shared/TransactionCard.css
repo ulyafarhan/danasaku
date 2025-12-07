@@ -83,3 +83,43 @@
 
 .transaction-amount.income { color: var(--color-success); }
 .transaction-amount.expense { color: var(--color-error); }
+
+/* Tambahkan di src/ui/components/shared/TransactionCard.css */
+
+.transaction-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.transaction-card:hover .card-actions {
+    opacity: 1;
+}
+
+.btn-icon-sm {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.btn-icon-sm:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+.btn-icon-sm.delete:hover {
+    color: var(--color-error);
+    background-color: var(--color-danger-soft);
+}

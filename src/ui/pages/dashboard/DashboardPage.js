@@ -8,18 +8,40 @@ import { MainLayout } from '../../layout/MainLayout.js';
 import Loader from '../../components/shared/Loader.js';
 
 export const DashboardPage = {
+    // Flag untuk mencegah duplikasi listener
+    listenersInitialized: false,
+
     initListeners() {
-        // Hapus listener lama sebelum menambah yang baru untuk mencegah duplikasi jika diperlukan
-        // Sederhananya, kita pasang listener ulang saat render
-        eventBus.on('transaction:created', () => {
-             if(window.location.hash === '#dashboard') this.render(document.getElementById('app'));
-        });
+        // Jika sudah di-init, jangan jalankan lagi
+        if (this.listenersInitialized) return;
+
+        // Handler untuk refresh halaman
+        const refreshHandler = () => {
+             // Hanya refresh jika user sedang berada di halaman dashboard
+             // Handle case hash kosong (default ke dashboard) atau #dashboard
+             const hash = window.location.hash;
+             if(hash === '#dashboard' || hash === '' || hash === '#') {
+                 this.render(document.getElementById('app'));
+             }
+        };
+
+        // Dengar semua event perubahan data
+        eventBus.on('transaction:created', refreshHandler);
+        eventBus.on('transaction:updated', refreshHandler);
+        eventBus.on('transaction:deleted', refreshHandler);
+        eventBus.on('sync:complete', refreshHandler);
+        
+        this.listenersInitialized = true;
     },
 
     async render(container) {
-        Loader.show(); // Tampilkan loader
-        await loadCSS('/src/ui/pages/dashboard/Dashboard.css');
+        // 1. Panggil Listener agar aktif
         this.initListeners();
+
+        Loader.show();
+        await loadCSS('/src/ui/pages/dashboard/Dashboard.css');
+        // Pastikan CSS kartu juga dimuat karena dipakai di list transaksi
+        await loadCSS('/src/ui/components/shared/TransactionCard.css'); 
 
         try {
             const [balanceData, transactions] = await Promise.all([
@@ -55,12 +77,11 @@ export const DashboardPage = {
         } catch (error) {
             container.innerHTML = `<div class="p-4 text-center error-message">Error: ${error.message}</div>`;
         } finally {
-            Loader.hide(); // Sembunyikan loader
+            Loader.hide();
         }
     },
 
     renderBalance(data) {
-        // Menggunakan desain 1 Kartu Utama + Info Pemasukan/Pengeluaran di bawahnya atau di dalamnya
         return `
             <div class="balance-card">
                 <div class="balance-label">Saldo Bersih Saat Ini</div>

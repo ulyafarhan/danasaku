@@ -1,9 +1,7 @@
-// Singleton: Koneksi Database
-
 import { APP_CONFIG } from '../../config/appConfig.js';
 import { onUpgradeNeeded } from './idbSchema.js';
 
-// Singleton Database Connection
+// Koneksi ke IndexedDB
 let dbInstance = null;
 
 export const IDBConnection = {

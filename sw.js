@@ -1,7 +1,7 @@
 // Service Worker: Caching & Background Sync
-
 import { syncTransactions } from './src/modules/transaction/use-cases/syncTransactions.js';
 
+// Constants
 const CACHE_NAME = 'danasaku-v1-static';
 const ASSETS = [
     '/',
@@ -13,7 +13,7 @@ const ASSETS = [
     '/src/styles/utilities.css'
 ];
 
-// 1. Install Event (Pre-cache)
+// --- Logika Install Service Worker ---
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
@@ -21,7 +21,7 @@ self.addEventListener('install', (event) => {
     self.skipWaiting();
 });
 
-// 2. Activate Event (Cleanup)
+// --- Logika Activate Service Worker ---
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then(keys => Promise.all(
@@ -31,7 +31,7 @@ self.addEventListener('activate', (event) => {
     self.clients.claim();
 });
 
-// 3. Fetch Event (Stale-while-revalidate)
+// --- Logika Fetch Request (Stale-while-revalidate) ---
 self.addEventListener('fetch', (event) => {
     // Skip non-GET or cross-origin requests
     if (event.request.method !== 'GET' || !event.request.url.startsWith(self.location.origin)) return;
@@ -48,7 +48,7 @@ self.addEventListener('fetch', (event) => {
     );
 });
 
-// 4. Background Sync Event
+// --- Logika Sync Event (Background Sync) ---
 self.addEventListener('sync', (event) => {
     if (event.tag === 'sync-transactions') {
         event.waitUntil(syncTransactions());
