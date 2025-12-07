@@ -1,6 +1,6 @@
 // Logika Batch Upload
 
-import { TransactionRepo } from '../../../data/repositories/transactionRepo.js';
+import { TransactionRepo } from '../../../repositories/transactionRepo.js';
 import { DataMapper } from '../../../data/api/dataMapper.js';
 import { GASClient } from '../../../data/api/gasClient.js';
 import { eventBus } from '../../../core/eventBus.js';

@@ -1,1 +1,26 @@
-# Daftar file yang diabaikan Git 
+# --- System Files ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- Editor / IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Logs & Debug ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# --- Dependencies (Jaga-jaga jika nanti pakai) ---
+node_modules/
+dist/
+
+# --- Local Config (Kunci API Lokal) ---
+# Abaikan file config jika berisi data rahasia saat development
+# src/config/appConfig.local.js
+
+# --- Git ---
+.git/

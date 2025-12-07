@@ -1,5 +1,3 @@
-// Controller Halaman Dashboard
-
 import { calculateBalance } from '../../../modules/transaction/use-cases/calculateBalance.js';
 import { getTransactionList } from '../../../modules/transaction/use-cases/getTransactionList.js';
 import { TransactionCard } from '../../components/shared/TransactionCard.js';
@@ -8,17 +6,13 @@ import { loadCSS } from '../../../core/cssLoader.js';
 import { eventBus } from '../../../core/eventBus.js';
 import { MainLayout } from '../../layout/MainLayout.js';
 
-// Page Controller: Dashboard
 export const DashboardPage = {
-    
-    // Register listener for real-time updates
     initListeners() {
         eventBus.on('transaction:created', () => this.render(document.getElementById('app')));
     },
 
     async render(container) {
         await loadCSS('/src/ui/pages/dashboard/Dashboard.css');
-        
         this.initListeners();
 
         try {
@@ -26,22 +20,24 @@ export const DashboardPage = {
             const transactions = await getTransactionList();
 
             const balanceHTML = this.renderBalance(balanceData);
-            const listHTML = transactions.map(t => TransactionCard.render(t)).join('');
+            const listHTML = transactions.slice(0, 5).map(t => TransactionCard.render(t)).join('');
 
-            container.innerHTML = `
+            const content = `
                 <div class="dashboard-page">
                     <header>
                         <h2>Selamat Datang</h2>
                     </header>
                     ${balanceHTML}
                     <div class="transaction-history">
-                        <h3>Riwayat Terbaru (${transactions.length} items)</h3>
+                        <h3>Riwayat Terbaru</h3>
                         ${transactions.length > 0 ? listHTML : '<p class="empty-state">Belum ada transaksi.</p>'}
                     </div>
                 </div>
             `;
+
+            container.innerHTML = await MainLayout.render(content);
         } catch (error) {
-            container.innerHTML = `<h1>Error Loading Dashboard: ${error.message}</h1>`;
+            container.innerHTML = `<h1>Error: ${error.message}</h1>`;
         }
     },
 
@@ -64,14 +60,3 @@ export const DashboardPage = {
         `;
     }
 };
-
-const balanceData = await calculateBalance();
-const transactions = await getTransactionList();
-
-// Gunakan Template Literals untuk konten dalam
-const content = `
-    <div class="dashboard-page">
-        </div>
-`;
-
-container.innerHTML = await MainLayout.render(content);

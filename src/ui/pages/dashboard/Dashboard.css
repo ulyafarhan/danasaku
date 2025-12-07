@@ -1,18 +1,7 @@
-/* Styling Halaman Dashboard */
-
-/* Header */
 .dashboard-page header {
     margin-bottom: var(--spacing-lg);
 }
 
-.dashboard-page header h2 {
-    font-size: 1.75rem;
-    background: linear-gradient(to right, var(--color-primary), var(--color-accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-/* Balance Card (Utama) */
 .balance-summary {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -20,33 +9,31 @@
     margin-bottom: var(--spacing-xl);
 }
 
+/* Kartu Utama (Saldo Bersih) */
 .card.total {
-    grid-column: span 2; /* Full width */
+    grid-column: span 2;
     background: linear-gradient(135deg, var(--color-primary), #1e3a8a);
     color: white;
     padding: var(--spacing-lg);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-glow);
+    box-shadow: var(--shadow-float);
     position: relative;
     overflow: hidden;
 }
 
-/* Pattern hiasan di kartu */
 .card.total::after {
     content: '';
     position: absolute;
-    top: -50%;
-    right: -20%;
-    width: 200px;
-    height: 200px;
+    top: -50%; right: -20%;
+    width: 200px; height: 200px;
     background: rgba(255,255,255,0.1);
     border-radius: 50%;
 }
 
 .card.total h4 { color: rgba(255,255,255,0.8); font-weight: 500; font-size: 0.9rem; }
-.card.total .amount { font-size: 2rem; font-weight: 800; margin-top: var(--spacing-xs); }
+.card.total .amount { font-size: 2rem; font-weight: 700; margin-top: var(--spacing-xs); }
 
-/* Income & Expense Cards */
+/* Kartu Kecil (Income/Expense) */
 .card.income, .card.expense {
     background: var(--color-surface);
     padding: var(--spacing-md);
@@ -55,14 +42,11 @@
     border: 1px solid var(--color-border);
 }
 
-.card.income h4, .card.expense h4 { font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 4px; }
+.card.income h4, .card.expense h4 { font-size: 0.8rem; color: var(--color-text-muted); }
 .card.income .amount { color: var(--color-success); font-weight: 700; font-size: 1.1rem; }
 .card.expense .amount { color: var(--color-danger); font-weight: 700; font-size: 1.1rem; }
 
-/* History Section */
 .transaction-history h3 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    margin-bottom: var(--spacing-md);
     font-size: 1.1rem;
 }

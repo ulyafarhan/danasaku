@@ -1,1 +1,13 @@
 # Konfigurasi Indexing Search Engine
+# Allow everything agar Googlebot bisa merender JS (ES Modules)
+
+User-agent: *
+Allow: /
+
+# Cegah crawling pada file sistem atau konfigurasi sensitif jika ada
+Disallow: /.git/
+Disallow: /.vscode/
+Disallow: /src/config/secret.js
+
+# Sitemap (Opsional, jika nanti ada)
+# Sitemap: https://danasaku.app/sitemap.xml

@@ -1,7 +1,7 @@
 // CRUD Logic ke IndexedDB
 
-import { IDBConnection } from '../database/idbConnection.js';
-import { APP_CONFIG } from '../../config/appConfig.js';
+import { IDBConnection } from '../data/database/idbConnection.js';
+import { APP_CONFIG } from '../config/appConfig.js';
 
 // Transaction Repository
 export const TransactionRepo = {

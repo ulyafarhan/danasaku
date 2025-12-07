@@ -1,6 +1,6 @@
 // Agregasi Saldo
 
-import { TransactionRepo } from '../../../data/repositories/transactionRepo.js';
+import { TransactionRepo } from '../../../repositories/transactionRepo.js';
 
 // Business Use Case: Aggregate Data
 export async function calculateBalance() {

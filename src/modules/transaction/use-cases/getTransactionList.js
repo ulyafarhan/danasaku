@@ -1,6 +1,6 @@
 // Query & Filtering
 
-import { TransactionRepo } from '../../../data/repositories/transactionRepo.js';
+import { TransactionRepo } from '../../../repositories/transactionRepo.js';
 
 // Business Use Case: Query Transactions
 export async function getTransactionList() {
