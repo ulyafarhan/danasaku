@@ -2,7 +2,7 @@
 import { syncTransactions } from './src/modules/transaction/use-cases/syncTransactions.js';
 
 // Constants
-const CACHE_NAME = 'danasaku-v1-static';
+const CACHE_NAME = 'danasaku-v2-static'; // Ganti versi cache biar refresh
 const ASSETS = [
     '/',
     '/index.html',
@@ -10,7 +10,10 @@ const ASSETS = [
     '/src/main.js',
     '/src/styles/reset.css',
     '/src/styles/variables.css',
-    '/src/styles/utilities.css'
+    '/src/styles/utilities.css',
+    '/src/styles/typography.css', // Pastikan file ini ada
+    '/icon-192.png', 
+    '/icon-512.png'  
 ];
 
 // --- Logika Install Service Worker ---
