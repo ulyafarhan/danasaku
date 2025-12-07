@@ -11,15 +11,35 @@ export const GASClient = {
             authKey: APP_CONFIG.APP_SECRET 
         };
         try {
-            await fetch(APP_CONFIG.API_URL, {
+            // Lakukan HTTP request ke GAS
+            const response = await fetch(APP_CONFIG.API_URL, {
                 method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                redirect: 'follow', // Penting: Ikuti redirect 302 dari Google
+                headers: { 
+                    'Content-Type': 'text/plain;charset=utf-8' 
+                },
+                body: JSON.stringify(securedPayload)
             });
+
+            // Cek apakah HTTP request sukses (200 OK)
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+            }
+
+            // Parse jawaban JSON dari server
+            const result = await response.json();
+
+            // Cek logika sukses dari server (cek status: 'success' dari DanaSaku.gs)
+            if (result.status !== 'success') {
+                throw new Error(result.message || 'Server menolak permintaan (Unauthorized/Error).');
+            }
+
             return true;
+
         } catch (error) {
             console.error('GAS Error:', error);
+            // Lempar error ke atas agar UI tahu kalau ini gagal
+            // (Nanti ikon centang bisa berubah jadi silang/merah)
             throw error;
         }
     },

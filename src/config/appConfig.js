@@ -4,8 +4,8 @@ export const APP_CONFIG = {
     DB_VERSION: 1, // Versi database IndexedDB
     STORE_NAME: 'transactions', // Nama store IndexedDB
     // Konfigurasi API
-    API_URL: 'https://script.google.com/macros/s/AKfycbxYfxyQ3La1Cd3dSiDHTqd3dDNWB6SFvxDXU9NAl26yuqz8qa_DXjtk3r2Fhgbi7Jzj/exec', 
+    API_URL: 'https://script.google.com/macros/s/AKfycbzCVRcN4LDCI6s9N3OFqlDalLRYEVjUvoDEWws_EYIICpyQqoyi4Aup_5cLDOSypvwS/exec', 
     APP_VERSION: '1.0.0', // Versi aplikasi
     CURRENCY: 'IDR', //mata uang yang digunakan
-    APP_SECRET: '123456' // Kunci rahasia untuk autentikasi API
+    APP_SECRET: '270807' // Kunci rahasia untuk autentikasi API
 };
